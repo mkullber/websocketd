@@ -74,6 +74,7 @@ func parseCommandLine() *Config {
 	maxForksFlag := flag.Int("maxforks", 0, "Max forks, zero means unlimited")
 	closeMsFlag := flag.Uint("closems", 0, "Time to start sending signals (0 never)")
 	redirPortFlag := flag.Int("redirport", 0, "HTTP port to redirect to canonical --port address")
+	onewayFlag := flag.Bool("oneway", false, "Ignore input from websocket client")
 
 	// lib config options
 	binaryFlag := flag.Bool("binary", false, "Set websocketd to experimental binary mode (default is line by line)")
@@ -145,6 +146,7 @@ func parseCommandLine() *Config {
 	config.StartupTime = time.Now()
 	config.ServerSoftware = fmt.Sprintf("websocketd/%s", Version())
 	config.HandshakeTimeout = time.Millisecond * 1500 // only default for now
+	config.Oneway = *onewayFlag
 
 	if len(os.Args) == 1 {
 		fmt.Printf("Command line arguments are missing.\n")

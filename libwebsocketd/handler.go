@@ -72,7 +72,8 @@ func (wsh *WebsocketdHandler) accept(ws *websocket.Conn, log *LogScope) {
 	log.Associate("pid", strconv.Itoa(launched.cmd.Process.Pid))
 
 	binary := wsh.server.Config.Binary
-	process := NewProcessEndpoint(launched, binary, log)
+	oneway := wsh.server.Config.Oneway
+	process := NewProcessEndpoint(launched, binary, log, oneway)
 	if cms := wsh.server.Config.CloseMs; cms != 0 {
 		process.closetime += time.Duration(cms) * time.Millisecond
 	}

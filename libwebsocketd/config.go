@@ -33,6 +33,7 @@ type Config struct {
 	Headers        []string
 	HeadersWs      []string
 	HeadersHTTP    []string
+	Oneway         bool
 
 	// created environment
 	Env       []string // Additional environment variables to pass to process ("key=value").

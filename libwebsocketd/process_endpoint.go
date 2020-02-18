@@ -18,14 +18,16 @@ type ProcessEndpoint struct {
 	output    chan []byte
 	log       *LogScope
 	bin       bool
+	oneway    bool
 }
 
-func NewProcessEndpoint(process *LaunchedProcess, bin bool, log *LogScope) *ProcessEndpoint {
+func NewProcessEndpoint(process *LaunchedProcess, bin bool, log *LogScope, oneway bool) *ProcessEndpoint {
 	return &ProcessEndpoint{
 		process: process,
 		output:  make(chan []byte),
 		log:     log,
 		bin:     bin,
+		oneway:  oneway,
 	}
 }
 
@@ -91,7 +93,9 @@ func (pe *ProcessEndpoint) Output() chan []byte {
 }
 
 func (pe *ProcessEndpoint) Send(msg []byte) bool {
-	pe.process.stdin.Write(msg)
+	if !pe.oneway {
+		pe.process.stdin.Write(msg)
+	}
 	return true
 }
 
